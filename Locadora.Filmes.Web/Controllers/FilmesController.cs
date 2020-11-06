@@ -11,6 +11,7 @@ using Locadora.Filmes.Dados.Entity.Context;
 using Locadora.Filmes.Dominio;
 using Locadora.Filmes.Repositorios.Comum;
 using Locadora.Filmes.Repositorios.Entity;
+using Locadora.Filmes.Web.ViewModels.Album;
 using Locadora.Filmes.Web.ViewModels.Filme;
 
 namespace Locadora.Filmes.Web.Controllers
@@ -19,12 +20,15 @@ namespace Locadora.Filmes.Web.Controllers
     {
         
         private IRepositorioGenerico<Filme, long>
-           repositorioAlbuns = new FilmesRepositorio(new FilmeDbContext());
+           repositorioFilmes = new FilmesRepositorio(new FilmeDbContext());
+
+        private IRepositorioGenerico<Album, int>
+            repositorioAlbuns = new AlbunsRepositorio(new FilmeDbContext());
 
         // GET: Filmes
         public ActionResult Index()
         {
-            return View(Mapper.Map<List<Filme>, List<FilmeIndexViewModel>>(repositorioAlbuns.Selecionar()));
+            return View(Mapper.Map<List<Filme>, List<FilmeIndexViewModel>>(repositorioFilmes.Selecionar()));
         }
 
         // GET: Filmes/Details/5
@@ -34,7 +38,7 @@ namespace Locadora.Filmes.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Filme filme = repositorioAlbuns.SelecionarPorId(id.Value);
+            Filme filme = repositorioFilmes.SelecionarPorId(id.Value);
             if (filme == null)
             {
                 return HttpNotFound();
@@ -45,7 +49,12 @@ namespace Locadora.Filmes.Web.Controllers
         // GET: Filmes/Create
         public ActionResult Create()
         {
-            ViewBag.IdAlbum = new SelectList(Mapper.Map<List<Filme>, List<FilmeIndexViewModel>>(repositorioAlbuns.Selecionar()), "IdAlbum", "Nome");
+            List<AlbumIndexViewModel> albuns = Mapper.Map<List<Album>,
+                List<AlbumIndexViewModel>>(repositorioAlbuns.Selecionar());
+
+            SelectList dropDownAlbuns = new SelectList(albuns, "Id", "Nome");
+            ViewBag.DropDownAlbuns = dropDownAlbuns;
+
             return View();
         }
 
@@ -59,11 +68,17 @@ namespace Locadora.Filmes.Web.Controllers
             if (ModelState.IsValid)
             {
                 Filme filme = Mapper.Map<FilmeViewModel, Filme>(viewModel);
-                repositorioAlbuns.Inserir(filme);
+                repositorioFilmes.Inserir(filme);
                 return RedirectToAction("Index");
             }
+            //ViewBag.IdAlbum = new SelectList(repositorioAlbuns.Selecionar(), "IdAlbum", "Nome", viewModel.IdAlbum);
 
-            ViewBag.IdAlbum = new SelectList(repositorioAlbuns.Selecionar(), "IdAlbum", "Nome", viewModel.IdAlbum);
+            List<AlbumIndexViewModel> albuns = Mapper.Map<List<Album>,
+               List<AlbumIndexViewModel>>(repositorioAlbuns.Selecionar());
+
+            SelectList dropDownAlbuns = new SelectList(albuns, "Id", "Nome");
+            ViewBag.DropDownAlbuns = dropDownAlbuns;
+            
             return View(viewModel);
         }
 
@@ -74,13 +89,20 @@ namespace Locadora.Filmes.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Filme filme = repositorioAlbuns.SelecionarPorId(id.Value);
+            Filme filme = repositorioFilmes.SelecionarPorId(id.Value);
             if (filme == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.IdAlbum = new SelectList(repositorioAlbuns.Selecionar(), "IdAlbum", "Nome", filme.IdAlbum);
-            return View(filme);
+            //ViewBag.IdAlbum = new SelectList(repositorioAlbuns.Selecionar(), "IdAlbum", "Nome", filme.IdAlbum);
+            
+            List<AlbumIndexViewModel> albuns = Mapper.Map<List<Album>,
+                List<AlbumIndexViewModel>>(repositorioAlbuns.Selecionar());
+
+            SelectList dropDownAlbuns = new SelectList(albuns, "Id", "Nome");
+            ViewBag.DropDownAlbuns = dropDownAlbuns;
+
+            return View(Mapper.Map<Filme, FilmeViewModel>(filme));
         }
 
         // POST: Filmes/Edit/5
@@ -93,10 +115,17 @@ namespace Locadora.Filmes.Web.Controllers
             if (ModelState.IsValid)
             {
                 Filme filme = Mapper.Map<FilmeViewModel, Filme>(viewModel);
-                repositorioAlbuns.Alterar(filme);
+                repositorioFilmes.Alterar(filme);
                 return RedirectToAction("Index");
             }
-            ViewBag.IdAlbum = new SelectList(repositorioAlbuns.Selecionar(), "IdAlbum", "Nome", viewModel.IdAlbum);
+            //ViewBag.IdAlbum = new SelectList(repositorioAlbuns.Selecionar(), "IdAlbum", "Nome", viewModel.IdAlbum);
+
+            List<AlbumIndexViewModel> albuns = Mapper.Map<List<Album>,
+                List<AlbumIndexViewModel>>(repositorioAlbuns.Selecionar());
+
+            SelectList dropDownAlbuns = new SelectList(albuns, "Id", "Nome");
+            ViewBag.DropDownAlbuns = dropDownAlbuns;
+            
             return View(viewModel);
         }
 
@@ -107,12 +136,12 @@ namespace Locadora.Filmes.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Filme filme = repositorioAlbuns.SelecionarPorId(id.Value);
+            Filme filme = repositorioFilmes.SelecionarPorId(id.Value);
             if (filme == null)
             {
                 return HttpNotFound();
             }
-            return View(filme);
+            return View(Mapper.Map<Filme, FilmeIndexViewModel>(filme));
         }
 
         // POST: Filmes/Delete/5
@@ -120,7 +149,7 @@ namespace Locadora.Filmes.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            repositorioAlbuns.ExcluirPorId(id);
+            repositorioFilmes.ExcluirPorId(id);
             return RedirectToAction("Index");
         }
 

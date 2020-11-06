@@ -8,7 +8,7 @@ namespace Locadora.Filmes.Web.ViewModels.Filme
 {
     public class FilmeViewModel
     {
-        [Required(ErrorMessage = "O Id é obrigatório")]
+        [Required(ErrorMessage = "O IdFilme é obrigatório")]
         public int IdFilme { get; set; }
 
         [Required(ErrorMessage = "O nome do filme é obrigatório")]
@@ -16,7 +16,7 @@ namespace Locadora.Filmes.Web.ViewModels.Filme
         [Display(Name = "Nome do filme")]
         public string NomeFilme { get; set; }
 
-        [Required(ErrorMessage = "É obrigatório escolher um álbum")]
+        [Required(ErrorMessage = "Selecione um álbum")]
         [Display(Name = "Nome do álbum")]
         public int IdAlbum { get; set; }
     }

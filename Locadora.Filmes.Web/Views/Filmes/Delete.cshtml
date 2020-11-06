@@ -12,11 +12,11 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.IdAlbum)
+            @Html.DisplayNameFor(model => model.NomeAlbum)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.IdAlbum)
+            @Html.DisplayFor(model => model.NomeAlbum)
         </dd>
 
         <dt>
@@ -29,7 +29,8 @@
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">

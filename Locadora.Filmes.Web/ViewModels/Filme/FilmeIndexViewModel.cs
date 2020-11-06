@@ -14,6 +14,6 @@ namespace Locadora.Filmes.Web.ViewModels.Filme
         public string NomeFilme { get; set; }
 
         [Display(Name = "Nome do álbum")]
-        public int IdAlbum { get; set; }
+        public string NomeAlbum { get; set; }
     }
 }

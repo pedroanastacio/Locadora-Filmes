@@ -22,7 +22,13 @@ namespace Locadora.Filmes.Web.AutoMapper
                 });
             Mapper.CreateMap<Album, AlbumViewModel>();
 
-            Mapper.CreateMap<Filme, FilmeIndexViewModel>();
+            Mapper.CreateMap<Filme, FilmeIndexViewModel>()
+                .ForMember(p => p.NomeAlbum, opt =>
+                {
+                    opt.MapFrom(src =>
+                   src.Album.Nome
+                   );
+                }); ;
             Mapper.CreateMap<Filme, FilmeViewModel>();
         }
     }

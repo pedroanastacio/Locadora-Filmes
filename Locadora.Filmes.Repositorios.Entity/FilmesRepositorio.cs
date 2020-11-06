@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace Locadora.Filmes.Repositorios.Entity
 {
@@ -19,7 +20,13 @@ namespace Locadora.Filmes.Repositorios.Entity
 
         public override List<Filme> Selecionar()
         {
-            return base.Selecionar();
+            return _contexto.Set<Filme>().Include(p => p.Album).ToList();
+        }
+
+        public override Filme SelecionarPorId(long id)
+        {
+            return _contexto.Set<Filme>().Include(p => p.Album)
+                .SingleOrDefault(f => f.IdFilme == id);
         }
     }
 }
