@@ -84,10 +84,17 @@
                 success: function (data, textStatus, XMLHttpREquest) {
                     $("#listaAlbunsBody").empty();
                     var trHTML = '';
-                    $.each(data, function (i, item) {
-                        trHTML += '<tr><td>' + item.Nome + '</td><td>' + item.Ano
-                            + '</td><td>' + item.Descricao + '</td><td>' + item.Autor
-                            + '</td><td>' + item.Email + '</td></tr>';
+                    $.each(data, function (i, album) {
+                        trHTML += '<tr><td>' +
+                            album.Nome + '</td><td>' +
+                            album.Ano + '</td><td>' +
+                            album.Descricao + '</td><td>' +
+                            album.Autor + '</td><td>' +
+                            album.Email + '</td><td>' +
+                            "<a href='/Albuns/Edit/" + album.Id + "'>Editar</a>" + " | " +
+                            "<a href='/Albuns/Details/" + album.Id + "'>Detalhar</a>" + " | " +
+                            "<a href='/Albuns/Delete/" + album.Id + "'>Excluir</a>" + " | " +
+                            '</td></tr>';
                     })
                     $("#listaAlbuns").append(trHTML)
                 }
