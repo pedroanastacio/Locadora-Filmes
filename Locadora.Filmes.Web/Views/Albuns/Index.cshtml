@@ -70,35 +70,37 @@
 </table>
 
 @section Scripts{
-    <script>
-        $('#btnPesquisarAlbum').on('click', function filtrarPorNome() {
-            $.ajax({
-                url: "/albuns/filtrarpornome/",
-                data: { pesquisa: $("#pesquisaAlbum").val() },
-                type: "get",
-                dataType: "json",
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    $("#listaAlbunsBody").empty();
-                    $("#listaAlbuns").append("erro");
-                },
-                success: function (data, textStatus, XMLHttpREquest) {
-                    $("#listaAlbunsBody").empty();
-                    var trHTML = '';
-                    $.each(data, function (i, album) {
-                        trHTML += '<tr><td>' +
-                            album.Nome + '</td><td>' +
-                            album.Ano + '</td><td>' +
-                            album.Descricao + '</td><td>' +
-                            album.Autor + '</td><td>' +
-                            album.Email + '</td><td>' +
-                            "<a href='/Albuns/Edit/" + album.Id + "'>Editar</a>" + " | " +
-                            "<a href='/Albuns/Details/" + album.Id + "'>Detalhar</a>" + " | " +
-                            "<a href='/Albuns/Delete/" + album.Id + "'>Excluir</a>" + " | " +
-                            '</td></tr>';
-                    })
-                    $("#listaAlbuns").append(trHTML)
-                }
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#btnPesquisarAlbum").click(function () {
+                var termoPesquisa = $("#pesquisaAlbum").val();
+                $.ajax({
+                    url: "/albuns/filtrarpornome?pesquisa=" + termoPesquisa,
+                    error: function (data) {
+                        alert("Houve um erro na pesquisa");
+                    },
+                    success: function (data) {
+                        $("#listaAlbuns tbody > tr").remove();
+                        $.each(data, function (i, album) {
+                            $("#listaAlbuns tbody").append(
+                                '<tr><td>' +
+                                album.Nome + '</td><td>' +
+                                album.Ano + '</td><td>' +
+                                album.Descricao + '</td><td>' +
+                                album.Autor + '</td><td>' +
+                                album.Email + '</td><td>' +
+                                "<a href='/Albuns/Edit/" + album.Id + "'>Editar</a>" + " | " +
+                                "<a href='/Albuns/Details/" + album.Id + "'>Detalhar</a>" + " | " +
+                                "<a href='/Albuns/Delete/" + album.Id + "'>Excluir</a>" + " | " +
+                                '</td></tr>'
+                            )
+                        })
+                    }
+                })
             })
         })
+
+        
     </script>
 }
