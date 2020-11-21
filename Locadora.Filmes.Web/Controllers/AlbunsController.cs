@@ -11,10 +11,12 @@ using Locadora.Filmes.Dados.Entity.Context;
 using Locadora.Filmes.Dominio;
 using Locadora.Filmes.Repositorios.Comum;
 using Locadora.Filmes.Repositorios.Entity;
+using Locadora.Filmes.Web.Filtros;
 using Locadora.Filmes.Web.ViewModels.Album;
 
 namespace Locadora.Filmes.Web.Controllers
 {
+    [LogActionFilter]
     public class AlbunsController : Controller
     {
         private IRepositorioGenerico<Album, int>

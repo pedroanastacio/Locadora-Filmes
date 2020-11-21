@@ -76,7 +76,7 @@
             $("#btnPesquisarAlbum").click(function () {
                 var termoPesquisa = $("#pesquisaAlbum").val();
                 $.ajax({
-                    url: "/albuns/filtrarpornome?pesquisa=" + termoPesquisa,
+                    url: "/albuns/filtrarpornome/" + termoPesquisa,
                     error: function (data) {
                         alert("Houve um erro na pesquisa");
                     },
